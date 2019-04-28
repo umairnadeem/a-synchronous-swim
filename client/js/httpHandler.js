@@ -5,13 +5,11 @@
   //
   // TODO: build the swim command fetcher here
   //
-  const ajaxSwimCommand = (successCB, arrowPress) => {
-    var formData = new FormData();
-    // formData.append('file', 'heyman');
-
+  const ajaxCommand = (successCB, data) => {
+   
     $.ajax({
       type: 'GET',
-      data: {'' : arrowPress},
+      data: data,
       url: serverUrl,
       success: successCB
     });
@@ -21,7 +19,7 @@
       
     var arrowPress = event.key.match(/Arrow(Up|Down|Left|Right)/)[1];
     if (arrowPress) {
-      ajaxSwimCommand(data => SwimTeam.move(data), arrowPress);
+      ajaxCommand(data => SwimTeam.move(data), { command : 'swim', '' : arrowPress});
     }
   });
 
@@ -29,20 +27,20 @@
   // The ajax file uplaoder is provided for your convenience!
   // Note: remember to fix the URL below.
   /////////////////////////////////////////////////////////////////////
-
+  
   const ajaxFileUplaod = (file) => {
     var formData = new FormData();
     formData.append('file', file);
     $.ajax({
       type: 'POST',
       data: formData,
-      url: serverUrl,
-      cache: false,
+
+      url: serverUrl + '/background.jpg',
+            cache: false,
       contentType: false,
       processData: false,
-      success: (data) => {
+      success: () => {
         // reload the page
-        console.log(data);
         window.location = window.location.href;
       }
     });
@@ -65,6 +63,5 @@
 
     ajaxFileUplaod(file);
   });
-
 
 })();

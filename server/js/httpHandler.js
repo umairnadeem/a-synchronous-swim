@@ -7,19 +7,36 @@ const multipart = require('./multipartUtils');
 module.exports.backgroundImageFile = path.join('.', 'background.jpg');
 ////////////////////////////////////////////////////////
 
-module.exports.router = (req, res, next = ()=>{}) => {
+module.exports.router = (req, res, next = () => { }) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  res.writeHead(200, headers);
-  // if(req.method === 'GET'){
-  //   const validMessages = ['left', 'right', 'up', 'down'];
-  //   res.write('req');
-  // }
-  var extractedKey = req.url.match(/\=(.*)/i)[1].toLowerCase();
-  res.write(`${extractedKey}`)
-  res.end();
+  if (req.method === 'GET') {
+    var command = req.url.match(/\=(.*[^\&])\&/i)
+    
+    
+    if (command && command[1] === 'swim') {
+      // do something
+      res.writeHead(200, headers);
+      var keyPress = req.url.match(/\&\=(.*)/i)[1].toLowerCase();
+      res.write(`${keyPress}`)
+      res.end();
+    } else {
+      var img = fs.readFileSync('/Users/student/Desktop/hrsf117-a-synchronous-swim/server/spec/water-lg.jpg');
+      res.writeHead(200, headers);
+      res.end(img, 'binary');
+    }
+  }
+  
+  
 };
 
-// another file.ks
-/*
-const whatever = require('./httpHandler.js')
-*/
+
+
+ // return bg img
+    //   // console.log(req.url);
+    //   if (fs.access('../background.jpg', fs.F_OK, (err) => {
+    //     if (err) {
+    //       res.writeHead(404, headers);
+    //       return;
+    //     }
+    //     res.writeHead(200, headers);
+    //   }));
